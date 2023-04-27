@@ -93,62 +93,32 @@ public class ListSE {
                 }
                 node.setNext(assistant.getNext());
                 assistant.setNext(node);
-                size++;
             }
         }
         else{
             head=node;
         }
-
+            size++;
     }
 
     public void deleteKidByIdentification(int identification){
-
         if(head!=null){
-
             Node assistant=head;
-            while(assistant.getNext()!=null && assistant.getNext().getData().getIdentification()!=identification){
+            if(assistant.getData().getIdentification()==identification){
 
+                head=assistant.getNext();
+                size--;
+                return;
+            }
+            while(assistant!=null){
+
+                if(assistant.getNext().getData().getIdentification()==identification){
+                    assistant.setNext(assistant.getNext().getNext());
+                    size--;
+                }
                 assistant=assistant.getNext();
             }
-
-             assistant.setNext(assistant.getNext().getNext());
-        }
-        else{
-            head=null;
-        }
-    }
-    public void losePositions(int position,int identification){
-
-        if(head!=null){
-
-           Node temp=head;
-           while(temp.getNext().getData().getIdentification()!=identification){
-
-               temp= temp.getNext();
-            }
-           Node temp5=temp.getNext().getNext();
-            int acumulator=0;
-            Node temp2=temp.getNext();
-            temp2.getData();
-            Node temp3=temp.getNext();
-            while (acumulator<position-1 &&temp3.getNext()!=null ){
-
-                temp3=temp3.getNext();
-                acumulator=acumulator+1;
-            }
-            Node temp6=temp3.getNext().getNext();
-            Node temp4=temp3.getNext();
-            temp4.getData();
-
-            temp3.setNext(temp2);
-            temp2.setNext(temp6);
-
-            temp.setNext(temp4);
-            temp4.setNext(temp5);
-        }
-        else{
-            head=null;
+            //no lo encontró si se sale del while
         }
     }
     public void mixKids(){
@@ -182,7 +152,7 @@ public class ListSE {
     public Node copyKid(Node temp){
         return new Node(temp.getData());
     }
-    public void losePositions1(int identification,int positionsToLose){
+    public void losePositions(int identification,int positionsToLose){
 
         if(head!=null){
             if(positionsToLose<size){
@@ -251,6 +221,7 @@ public class ListSE {
             }
         }
     }
+
     public void invert(){
         if(this.head !=null){
             ListSE listCp = new ListSE();
@@ -272,9 +243,8 @@ public class ListSE {
                     listCp.addToStart(temp.getData());
                 }
                 else{
-                    listCp.add(temp.getData());
+                    listCp.addToEnd(temp.getData());
                 }
-
                 temp = temp.getNext();
             }
             this.head = listCp.getHead();
@@ -369,19 +339,32 @@ public class ListSE {
         }
         return count;
     }
-    /*public int getCountKidsByGender(char gender){
-        int count= 0;
-        if(this.head!=null){
-            Node temp = this.head;
-            while (temp != null){
-                if(temp.getData().getGender().equals(gender)){
+    public void deleteKidByAge(int age){
+        Node temp = head;
+        while(temp!=null){
 
-                    count++;
-
-                }
+            if(temp.getData().getAge()==age){
+                deleteKidByIdentification(temp.getData().getIdentification());
+            }
+            temp=temp.getNext();
+        }
+    }
+    public float averageKidsAge(){
+        if (head != null){
+            Node temp = head;
+            int count = 0;
+            int ages = 0;
+            while(temp != null) {
+                count++;
+                ages = ages + temp.getData().getAge();
                 temp = temp.getNext();
             }
+            float average=ages/count;
+
+            return average;
         }
-        return count;
-    }*/
+        else{
+            return 0;
+        }
+    }
 }

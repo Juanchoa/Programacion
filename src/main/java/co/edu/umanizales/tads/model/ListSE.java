@@ -367,4 +367,19 @@ public class ListSE {
             return 0;
         }
     }
+    public void addAtTheEndByInicialName(String letter){
+        ListSE listCp = new ListSE();
+        Node temp = head;
+        while(temp!=null){
+            if(temp.getData().getName().startsWith(letter)){
+                listCp.addToEnd(temp.getData());
+            }
+            else{
+                listCp.addToStart(temp.getData());
+            }
+            temp=temp.getNext();
+        }
+        head=listCp.getHead();
+        //commit
+    }
 }

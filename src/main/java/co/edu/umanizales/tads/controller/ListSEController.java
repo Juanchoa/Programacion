@@ -158,8 +158,8 @@ public class ListSEController {
 
     }
 
-    @PostMapping(path = "/add_in_position")
-    public ResponseEntity<ResponseDTO> addInPosition(@RequestBody int numero,KidDTO kidDTO){
+    @PostMapping(path = "/add_in_position/{number}")
+    public ResponseEntity<ResponseDTO> addInPosition(KidDTO kidDTO,@PathVariable int number){
         Location locationDep = locationService.getLocationByCode(kidDTO.getCodeLocationDep());
         Location locationMun = locationService.getLocationByCode(kidDTO.getCodeLocationMun());
         Gender gender = genderService.getGenderByGenderCode(kidDTO.getGenderCode());
@@ -180,7 +180,7 @@ public class ListSEController {
                     400,"El pelao ya existe.",
                     null), HttpStatus.OK);
         }
-        listSEService.getKids().addInPosition(numero,
+        listSEService.getKids().addInPosition(number,
                 new Kid(kidDTO.getIdentification(),
                         kidDTO.getName(), kidDTO.getAge(),
                         gender, locationDep,locationMun));
@@ -189,10 +189,10 @@ public class ListSEController {
                 null), HttpStatus.OK);
 
     }
-    @GetMapping(path = "/delete_kid_by_identification")
-    public ResponseEntity<ResponseDTO> deleteKidIdentification(@RequestBody int numero){
+    @GetMapping(path = "/delete_kid_by_identification/{number}")
+    public ResponseEntity<ResponseDTO> deleteKidIdentification(@PathVariable int number){
 
-        int iden = listSEService.getKids().checkIdentification(numero);
+        int iden = listSEService.getKids().checkIdentification(number);
 
         if(iden == 0){
             return new ResponseEntity<>(new ResponseDTO(
@@ -200,7 +200,7 @@ public class ListSEController {
                     null), HttpStatus.OK);
         }
         if(iden == 1){
-            listSEService.getKids().deleteKidByIdentification(numero);
+            listSEService.getKids().deleteKidByIdentification(number);
             return new ResponseEntity<>(new ResponseDTO(
                     200,"Se ha eliminado el pealo.",
                     null), HttpStatus.OK);
@@ -342,6 +342,12 @@ public class ListSEController {
     public ResponseEntity<ResponseDTO> averageAge(){
         return new ResponseEntity<>(new ResponseDTO(200,
                 listSEService.getKids().averageKidsAge(), null), HttpStatus.OK);
+    }
+    @GetMapping(path="/add_at_the_end_by_initial_letter/{letter}")
+    public ResponseEntity<ResponseDTO> addAtTheEndByInitialLetter(@PathVariable String letter){
+        listSEService.getKids().addAtTheEndByInicialName(letter);
+        return new ResponseEntity<>(new ResponseDTO(200,
+                "Se han adicionado al final los niños que empiezan por la letra "+letter, null), HttpStatus.OK);
     }
 
 }

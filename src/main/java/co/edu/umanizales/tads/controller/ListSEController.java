@@ -1,8 +1,10 @@
 package co.edu.umanizales.tads.controller;
 import co.edu.umanizales.tads.controller.dto.*;
+import co.edu.umanizales.tads.model.AgeRanges;
 import co.edu.umanizales.tads.model.Gender;
 import co.edu.umanizales.tads.model.Kid;
 import co.edu.umanizales.tads.model.Location;
+import co.edu.umanizales.tads.service.AgeRangesService;
 import co.edu.umanizales.tads.service.GenderService;
 import co.edu.umanizales.tads.service.ListSEService;
 import co.edu.umanizales.tads.service.LocationService;
@@ -29,6 +31,8 @@ public class ListSEController {
     private LocationService locationService;
     @Autowired
     private GenderService genderService;
+    @Autowired
+    private AgeRangesService ageRangesService;
 
     @GetMapping
     public ResponseEntity<ResponseDTO> getKids(){
@@ -41,7 +45,7 @@ public class ListSEController {
     public ResponseEntity<ResponseDTO> invert(){
         listSEService.invert();
         return new ResponseEntity<>(new ResponseDTO(
-                200,"SE ha invertido la lista.",
+                200,"Se ha invertido la lista.",
                 null), HttpStatus.OK);
 
     }
@@ -348,6 +352,22 @@ public class ListSEController {
         listSEService.getKids().addAtTheEndByInicialName(letter);
         return new ResponseEntity<>(new ResponseDTO(200,
                 "Se han adicionado al final los niños que empiezan por la letra "+letter, null), HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/get_kids_range_by_age")
+
+    public ResponseEntity<ResponseDTO> getRangeByKids() {
+
+        List<AgeRangesDTO> ageRangesDTOList = new ArrayList<>();
+
+        for (AgeRanges ranges : ageRangesService.getRanges()) {
+            int quantity = listSEService.getKids().getKidsRangeByAge(ranges.getMin(), ranges.getMax());
+            if(quantity>0){
+            ageRangesDTOList.add(new AgeRangesDTO(ranges, quantity));}
+        }
+        return new ResponseEntity<>(new ResponseDTO(200, ageRangesDTOList, null),
+                HttpStatus.OK);
+
     }
 
 }

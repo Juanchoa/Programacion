@@ -380,6 +380,17 @@ public class ListSE {
             temp=temp.getNext();
         }
         head=listCp.getHead();
-        //commit
+    }
+    public int getKidsRangeByAge(int min, int max) {
+        Node temp = head;
+        int count = 0;
+        while (temp !=  null) {
+            if (temp.getData().getAge() >= min && temp.getData().getAge() <= max) {
+                count++;
+            }
+            temp= temp.getNext();
+        }
+
+        return count;
     }
 }

@@ -145,9 +145,7 @@ public class ListSE {
             }
             head=copyList.getHead();
         }
-        else{
 
-        }
     }
     public Node copyKid(Node temp){
         return new Node(temp.getData());
@@ -171,19 +169,17 @@ public class ListSE {
 
                         if(temp.getNext()!=null){
                             //el pelao no existe
-
                             return;
                         }
                     }
                     Node temp2=copyKid(temp.getNext());
                     temp.setNext(temp.getNext().getNext());
                     addInPosition(count+1+positionsToLose,temp2.getData());
-
                 }
             }
             else{
                 //no se puede añadir en esa posición
-                return;
+
             }
         }
     }

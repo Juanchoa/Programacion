@@ -12,7 +12,6 @@ public class AgeRangesService {
 
     private List<AgeRanges> ranges;
 
-
     public AgeRangesService(){
         ranges=new ArrayList<>();
         ranges.add(new AgeRanges((byte) 1,(byte)3));

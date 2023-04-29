@@ -19,6 +19,5 @@ public class AgeRangesService {
         ranges.add(new AgeRanges((byte) 7,(byte)9));
         ranges.add(new AgeRanges((byte) 10,(byte)13));
         ranges.add(new AgeRanges((byte) 12,(byte)15));
-
     }
 }

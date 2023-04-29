@@ -79,8 +79,8 @@ public class ListDE {
 
                 if(assistant.getNext().getData().getIdentification()==identification){
 
-                    assistant.getNext().getNext().setPrevious(assistant);
                     assistant.setNext(assistant.getNext().getNext());
+                    assistant.getNext().getNext().setPrevious(assistant);
 
                     size--;
                 }
@@ -190,6 +190,119 @@ public class ListDE {
             }
         }
     }
+    public void invert(){
+        if(this.head !=null){
+            ListDE listCp = new ListDE();
+            NodeDE temp = this.head;
+            while(temp != null){
+                listCp.addPetToStart(temp.getData());
+                temp = temp.getNext();
+            }
+            this.head = listCp.getHead();
+        }
+    }
+    public void orderBoysToStart(){
+        if(this.head !=null){
+            ListDE listCp = new ListDE();
+            NodeDE temp = this.head;
+            while(temp != null){
+
+                if(temp.getData().getGender().getGender()=='M')
+                {
+                    listCp.addPetToStart(temp.getData());
+                }
+                else{
+                    listCp.addPetToEnd(temp.getData());
+                }
+                temp = temp.getNext();
+            }
+            this.head = listCp.getHead();
+        }
+    }
+    public void changeExtremes(){
+        if(this.head !=null && this.head.getNext() !=null)
+        {
+            NodeDE temp = this.head;
+            while(temp.getNext()!=null)
+            {
+                temp = temp.getNext();
+            }
+            //temp está en el último
+            Pet copy = this.head.getData();
+            this.head.setData(temp.getData());
+            temp.setData(copy);
+        }
+
+    }
+    public void deletePetByAge(int age){
+        NodeDE temp = head;
+        while(temp!=null){
+
+            if(temp.getData().getAge()==age){
+                deletePetById(temp.getData().getIdentification());
+            }
+            temp=temp.getNext();
+        }
+    }
+    public float averagePetsAge(){
+        if (head != null){
+            NodeDE temp = head;
+            int count = 0;
+            int ages = 0;
+            while(temp != null) {
+                count++;
+                ages = ages + temp.getData().getAge();
+                temp = temp.getNext();
+            }
+            float average=ages/(float)count;
+
+            return average;
+        }
+        else{
+            return 0;
+        }
+    }
+    public void addPetAtTheEndByInicialName(String letter){
+        ListDE listCp = new ListDE();
+        NodeDE temp = head;
+        while(temp!=null){
+            if(temp.getData().getName().startsWith(letter)){
+                listCp.addPetToEnd(temp.getData());
+            }
+            else{
+                listCp.addPetToStart(temp.getData());
+            }
+            temp=temp.getNext();
+        }
+        head=listCp.getHead();
+    }
+    public int getPetsRangeAge(int min, int max) {
+        NodeDE temp = head;
+        int count = 0;
+        while (temp !=  null) {
+            if (temp.getData().getAge() >= min && temp.getData().getAge() <= max) {
+                count++;
+            }
+            temp= temp.getNext();
+        }
+        return count;
+    }
+
+
+    public int getCountKidsMunByLocationCode(String code){
+        int count =0;
+        if( this.head!=null){
+            Node temp = this.head;
+            while(temp != null){
+                if(temp.getData().getLocationMun().getCode().equals(code)){
+                    count++;
+                }
+                temp = temp.getNext();
+            }
+        }
+        return count;
+    }
+
 
 
 

@@ -355,7 +355,7 @@ public class ListSE {
                 ages = ages + temp.getData().getAge();
                 temp = temp.getNext();
             }
-            float average=ages/count;
+            float average=ages/(float)count;
 
             return average;
         }
@@ -386,7 +386,6 @@ public class ListSE {
             }
             temp= temp.getNext();
         }
-
         return count;
     }
 }

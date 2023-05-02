@@ -22,10 +22,9 @@ public class ListDEController {
     private SpeciesService speciesService;
 
     @GetMapping
-    public ResponseEntity<ResponseDTO> getKids(){
+    public ResponseEntity<ResponseDTO> getPets(){
         return new ResponseEntity<>(new ResponseDTO(
                 200,listDEService.getPets().seePets(),null), HttpStatus.OK);
-
     }
 
     @GetMapping("/invert")
@@ -34,7 +33,6 @@ public class ListDEController {
         return new ResponseEntity<>(new ResponseDTO(
                 200,"Se ha invertido la lista.",
                 null), HttpStatus.OK);
-
     }
 
     @GetMapping(path = "/change_extremes")
@@ -156,8 +154,8 @@ public class ListDEController {
                 null), HttpStatus.OK);
     }
 
-    @GetMapping(path="/delete_kid_by_age/{age}")
-    public ResponseEntity<ResponseDTO> deleteKidByAge(@PathVariable int age){
+    @GetMapping(path="/delete_pets_by_age/{age}")
+    public ResponseEntity<ResponseDTO> deletePetsByAge(@PathVariable int age){
         listDEService.getPets().deletePetByAge(age);
         return new ResponseEntity<>(new ResponseDTO(200, "Se han eliminado todas las mascotas que tienen "+ age +" años.",
                 null), HttpStatus.OK);

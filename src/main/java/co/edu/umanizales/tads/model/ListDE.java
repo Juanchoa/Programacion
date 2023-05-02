@@ -41,7 +41,7 @@ public class ListDE {
                 newListDE.add(temp);
                 temp=temp.getNext();
             }
-            return  newListDE;
+            return newListDE;
         }
         else{
             return null;

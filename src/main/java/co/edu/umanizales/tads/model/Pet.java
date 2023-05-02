@@ -9,16 +9,8 @@ import javax.validation.constraints.*;
 @AllArgsConstructor
 public class Pet {
     private int identification;
-    @Size(min=1,max=30)
     private String name;
-    @Min(1)@Max(14)
     private byte age;
-    @Pattern(regexp = "[MF]")
     private char gender;
     private Species species;
-
-
-
-    //private Location locationDep;
-    //private Location locationMun;
 }

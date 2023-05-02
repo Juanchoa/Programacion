@@ -21,6 +21,7 @@ public class ListDEController {
     @Autowired
     private SpeciesService speciesService;
 
+
     @GetMapping
     public ResponseEntity<ResponseDTO> getPets(){
         return new ResponseEntity<>(new ResponseDTO(
@@ -44,7 +45,7 @@ public class ListDEController {
     }
 
     @PostMapping(path = "/add_pet_to_start")
-    public ResponseEntity<ResponseDTO> addKidToStar(@RequestBody PetDTO petDTO){
+    public ResponseEntity<ResponseDTO> addPetToStar(@RequestBody PetDTO petDTO){
         Species species = speciesService.getSpeciesByCode(petDTO.getCodeSpecies());
         int number = listDEService.getPets().checkIdentificationPet(petDTO.getIdentification());
         if(species == null){

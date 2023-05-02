@@ -26,10 +26,11 @@ public class SpeciesService {
     public Species getSpeciesByCode(String code){
 
         for(Species i: species){
-            if(i.getCode()==code) {
+            if(i.getCode().equals(code)){
                 return i;
             }
         }
         return null;
     }
+
 }

@@ -10,4 +10,6 @@ import org.springframework.stereotype.Service;
 public class ListDEService {
     private ListDE pets;
     private SpeciesService spices;
+
+    public ListDEService() {pets = new ListDE();}
 }

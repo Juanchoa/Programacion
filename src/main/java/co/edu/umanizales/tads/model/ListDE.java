@@ -32,7 +32,6 @@ public class ListDE {
     }
 
     public List<NodeDE> seePets(){
-
         List<NodeDE> newListDE= new ArrayList<>();
         if(head!=null){
             NodeDE temp = head;
@@ -53,7 +52,7 @@ public class ListDE {
          NodeDE newNodeDE=new NodeDE(pet);
          if(head!=null){
              NodeDE temp=this.head;
-             while(temp!=null){
+             while(temp.getNext()!=null){
 
                  temp=temp.getNext();
              }

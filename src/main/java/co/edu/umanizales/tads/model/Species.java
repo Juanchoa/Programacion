@@ -6,6 +6,6 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class Species {
-    private String species;
     private String code;
+    private String species;
 }

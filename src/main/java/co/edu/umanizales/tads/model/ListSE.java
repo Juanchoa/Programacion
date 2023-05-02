@@ -21,6 +21,8 @@ public class ListSE {
 
                 //pelao existe
                 numero = 1;
+
+                return numero;
             }
             temp = temp.getNext();
         }
@@ -29,23 +31,6 @@ public class ListSE {
         return numero;
     }
 
-    public void add(Kid kid){
-
-        if(head != null){
-            Node temp = head;
-            while(temp.getNext() !=null)
-            {
-                temp = temp.getNext();
-            }
-            /// Parado en el último
-            Node newNode = new Node(kid);
-            temp.setNext(newNode);
-        }
-        else {
-            head = new Node(kid);
-        }
-        size++;
-    }
     public void addToStart(Kid kid){
         if(head !=null)
         {

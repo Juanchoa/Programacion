@@ -3,10 +3,50 @@ package co.edu.umanizales.tads.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Data
 public class ListDE {
     private NodeDE head;
     private int size;
+
+
+    public int checkIdentificationPet(int identificaion) {
+        int numero = 0;
+        if (head != null){
+            NodeDE temp = head;
+            while (temp!= null) {
+                if (temp.getData().getIdentification() == identificaion) {
+
+                    //pelao existe
+                    numero = 1;
+
+                    return numero;
+                }
+                temp = temp.getNext();
+            }
+            //si retorna 0 no existe
+        }
+        return numero;
+    }
+
+    public List<NodeDE> seePets(){
+
+        List<NodeDE> newListDE= new ArrayList<>();
+        if(head!=null){
+            NodeDE temp = head;
+            while(temp!=null){
+
+                newListDE.add(temp);
+                temp=temp.getNext();
+            }
+            return  newListDE;
+        }
+        else{
+            return null;
+        }
+    }
 
      public void addPetToEnd(Pet pet){
 
@@ -89,7 +129,7 @@ public class ListDE {
             //no lo encontró si se sale del while
         }
     }
-    public void mixKids(){
+    public void mixPets(){
         if(head!=null){
             ListDE copyList=new ListDE();
             NodeDE temp=this.head;
@@ -97,14 +137,14 @@ public class ListDE {
             int positionGirl=0;
             while(temp!=null) {
 
-                if (temp.getData().getGender().getGender()==('M')){
+                if (temp.getData().getGender()==('M')){
 
                     copyList.addPetInPosition(1+positionBoy,temp.getData());
 
                     positionBoy=positionBoy+2;
 
                 }
-                if(temp.getData().getGender().getGender()==('F')){
+                if(temp.getData().getGender()==('F')){
                     copyList.addPetInPosition(2+positionGirl,temp.getData());
 
                     positionGirl=positionGirl+2;
@@ -207,7 +247,7 @@ public class ListDE {
             NodeDE temp = this.head;
             while(temp != null){
 
-                if(temp.getData().getGender().getGender()=='M')
+                if(temp.getData().getGender()=='M')
                 {
                     listCp.addPetToStart(temp.getData());
                 }
@@ -289,12 +329,12 @@ public class ListDE {
     }
 
 
-    public int getCountKidsMunByLocationCode(String code){
+    public int getCountPetsSpicesByCode(String code){
         int count =0;
         if( this.head!=null){
-            Node temp = this.head;
+            NodeDE temp = this.head;
             while(temp != null){
-                if(temp.getData().getLocationMun().getCode().equals(code)){
+                if(temp.getData().getSpecies().getCode()==code){
                     count++;
                 }
                 temp = temp.getNext();

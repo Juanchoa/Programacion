@@ -59,44 +59,7 @@ public class ListSEController {
     }
 
 
-    @PostMapping(path = "/add_kid")
-    public ResponseEntity<ResponseDTO> addKid(@RequestBody KidDTO kidDTO){
-        Location locationDep = locationService.getLocationByCode(kidDTO.getCodeLocationDep());
-        Location locationMun = locationService.getLocationByCode(kidDTO.getCodeLocationMun());
-        Gender gender = genderService.getGenderByGenderCode(kidDTO.getGenderCode());
-        int iden = listSEService.getKids().checkIdentification(kidDTO.getIdentification());
 
-
-        if(gender == null){
-            return new ResponseEntity<>(new ResponseDTO(
-                    404,"El genero no existe.",
-                    null), HttpStatus.OK);
-        }
-
-        if(locationDep == null){
-            return new ResponseEntity<>(new ResponseDTO(
-                    404,"La ubicación no existe.",
-                    null), HttpStatus.OK);
-        }
-        if(locationMun == null){
-            return new ResponseEntity<>(new ResponseDTO(
-                    404,"La ubicación no existe.",
-                    null), HttpStatus.OK);
-        }
-        if(iden == 1){
-            return new ResponseEntity<>(new ResponseDTO(
-                    400,"El pelao ya existe.",
-                    null), HttpStatus.OK);
-        }
-        listSEService.getKids().add(
-                new Kid(kidDTO.getIdentification(),
-                        kidDTO.getName(), kidDTO.getAge(),
-                        gender, locationDep,locationMun));
-        return new ResponseEntity<>(new ResponseDTO(
-                200,"Se ha adicionado el petacón.",
-                null), HttpStatus.OK);
-
-    }
 
     @PostMapping(path = "/add_kid_to_start")
     public ResponseEntity<ResponseDTO> addKidToStar(@RequestBody KidDTO kidDTO){
@@ -163,7 +126,7 @@ public class ListSEController {
     }
 
     @PostMapping(path = "/add_in_position/{number}")
-    public ResponseEntity<ResponseDTO> addInPosition(KidDTO kidDTO,@PathVariable int number){
+    public ResponseEntity<ResponseDTO> addInPosition(@RequestBody KidDTO kidDTO,@PathVariable int number){
         Location locationDep = locationService.getLocationByCode(kidDTO.getCodeLocationDep());
         Location locationMun = locationService.getLocationByCode(kidDTO.getCodeLocationMun());
         Gender gender = genderService.getGenderByGenderCode(kidDTO.getGenderCode());

@@ -14,9 +14,11 @@ public class Pet {
     @Min(1)@Max(14)
     private byte age;
     @Pattern(regexp = "[MF]")
-    private Gender gender;
-    @NotEmpty
-    private Race race;
+    private char gender;
+    private Species species;
+
+
+
     //private Location locationDep;
     //private Location locationMun;
 }

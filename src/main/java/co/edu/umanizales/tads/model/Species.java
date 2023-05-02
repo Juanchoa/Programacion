@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class Race {
-    private String race;
-    private int code;
+public class Species {
+    private String species;
+    private String code;
 }

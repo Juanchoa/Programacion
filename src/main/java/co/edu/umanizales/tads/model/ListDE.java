@@ -31,13 +31,13 @@ public class ListDE {
         return numero;
     }
 
-    public List<NodeDE> seePets(){
-        List<NodeDE> newListDE= new ArrayList<>();
+    public List<Pet> seePets(){
+        List<Pet> newListDE= new ArrayList<>();
         if(head!=null){
             NodeDE temp = head;
             while(temp!=null){
 
-                newListDE.add(temp);
+                newListDE.add(temp.getData());
                 temp=temp.getNext();
             }
             return newListDE;
@@ -81,9 +81,11 @@ public class ListDE {
         if(head!=null){
             if(position>size){
                 addPetToEnd(pet);
+                return;
             }
             if(position==1){
                 addPetToStart(pet);
+                return;
             }
             if(position!=1){
                 int accumulator=0;
@@ -104,28 +106,23 @@ public class ListDE {
         }
         size++;
     }
-    public void deletePetById(int identification){
-        if(head!=null){
-            NodeDE assistant=head;
-            if(assistant.getData().getIdentification()==identification){
-
-                head=assistant.getNext();
-                head.setPrevious(null);
-                size--;
-                return;
-            }
-            while(assistant!=null){
-
-                if(assistant.getNext().getData().getIdentification()==identification){
-
-                    assistant.setNext(assistant.getNext().getNext());
-                    assistant.getNext().getNext().setPrevious(assistant);
-
-                    size--;
+    public void deletePetById (int id){
+        NodeDE temp = head;
+        while (temp != null){
+            if (temp.getData().getIdentification()==id){
+                NodeDE prev = temp.getPrevious();
+                NodeDE next = temp.getNext();
+                if (prev == null){
+                    head = next;
+                }else{
+                    prev.setNext(next);
                 }
-                assistant=assistant.getNext();
+                if (next != null){
+                    next.setPrevious(prev);
+                }
+                size--;
             }
-            //no lo encontró si se sale del while
+            temp = temp.getNext();
         }
     }
     public void mixPets(){
@@ -177,16 +174,14 @@ public class ListDE {
                         temp=temp.getNext();
                         count++;
 
-                        if(temp.getNext()!=null){
+                        if(temp.getNext()==null){
                             //el pelao no existe
                             return;
                         }
                     }
                     NodeDE temp2=copyPet(temp.getNext());
-                    temp.getNext().getNext().setPrevious(temp);
-                    temp.setNext(temp.getNext().getNext());
-                    addPetInPosition(count+1+positionsToLose,temp2.getData());
-
+                    deletePetById(temp.getNext().getData().getIdentification());
+                    addPetInPosition((count+1+positionsToLose),temp2.getData());
                 }
             }
             else{
@@ -207,19 +202,21 @@ public class ListDE {
                     while(temp.getNext().getData().getIdentification()!=identification){
                         temp=temp.getNext();
                         count++;
-                        if(temp.getNext()!=null){
+                        if(temp.getNext()==null){
                             //el pelao no existe
                             return;
                         }
                     }
+                    //copiamos los datos del dato que va a ganar las posiciones
                     NodeDE temp2=copyPet(temp.getNext());
-                    temp.getNext().getNext().setPrevious(temp);
-                    temp.setNext(temp.getNext().getNext());
+                    //eliminamos al nodo que contiene los datos en la lsita
+                    deletePetById(temp.getNext().getData().getIdentification());
+                    //añadimos la copia del dato en la lista
                     if(positionsToWin>=count+1){
                         addPetToStart(temp2.getData());
                     }
                     else {
-                        addPetInPosition((count + 1) - positionsToWin, temp2.getData());
+                        addPetInPosition(((count + 1) - positionsToWin), temp2.getData());
                     }
                 }
             }

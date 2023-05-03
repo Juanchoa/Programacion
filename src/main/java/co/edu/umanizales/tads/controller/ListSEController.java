@@ -145,14 +145,15 @@ public class ListSEController {
                     400,"El pelao ya existe.",
                     null), HttpStatus.OK);
         }
-        listSEService.getKids().addInPosition(number,
-                new Kid(kidDTO.getIdentification(),
-                        kidDTO.getName(), kidDTO.getAge(),
-                        gender, locationDep,locationMun));
-        return new ResponseEntity<>(new ResponseDTO(
-                200,"Se ha adicionado el petacón.",
-                null), HttpStatus.OK);
-
+        else {
+            listSEService.getKids().addInPosition(number,
+                    new Kid(kidDTO.getIdentification(),
+                            kidDTO.getName(), kidDTO.getAge(),
+                            gender, locationDep, locationMun));
+            return new ResponseEntity<>(new ResponseDTO(
+                    200, "Se ha adicionado el petacón.",
+                    null), HttpStatus.OK);
+        }
     }
     @GetMapping(path = "/delete_kid_by_identification/{number}")
     public ResponseEntity<ResponseDTO> deleteKidIdentification(@PathVariable int number){
@@ -164,15 +165,12 @@ public class ListSEController {
                     404,"El pelao no existe.",
                     null), HttpStatus.OK);
         }
-        if(iden == 1){
+        else{
             listSEService.getKids().deleteKidByIdentification(number);
             return new ResponseEntity<>(new ResponseDTO(
                     200,"Se ha eliminado el pealo.",
                     null), HttpStatus.OK);
         }
-        return new ResponseEntity<>(new ResponseDTO(
-                404,"El pelao no existe.",
-                null), HttpStatus.OK);
     }
     @GetMapping(path = "/mix_kids")
     public ResponseEntity<ResponseDTO> mixKids(){
@@ -233,15 +231,13 @@ public class ListSEController {
                     404,"El pelao no existe",
                     null), HttpStatus.OK);
         }
-        if(iden == 1){
+        else{
             listSEService.getKids().winPositions(identification,positions);
             return new ResponseEntity<>(new ResponseDTO(
                     200,"el pelao ha ganado "+ positions +" posiciones.",
                     null), HttpStatus.OK);
         }
-        return new ResponseEntity<>(new ResponseDTO(
-                404,"El pelao no existe",
-                null), HttpStatus.OK);
+
     }
 
     @GetMapping(path = "/kids_dep_by_locations")

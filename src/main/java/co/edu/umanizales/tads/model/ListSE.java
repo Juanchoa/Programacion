@@ -64,6 +64,7 @@ public class ListSE {
         if(head!=null){
             if(position>size){
                 addToEnd(kid);
+                return;
             }
             if(position==1){
                 addToStart(kid);
@@ -93,17 +94,19 @@ public class ListSE {
 
                 head=assistant.getNext();
                 size--;
-                return;
             }
-            while(assistant!=null){
+            else {
+                    while (assistant != null) {
 
-                if(assistant.getNext().getData().getIdentification()==identification){
-                    assistant.setNext(assistant.getNext().getNext());
-                    size--;
-                }
-                assistant=assistant.getNext();
+                        if (assistant.getNext().getData().getIdentification() == identification) {
+                            assistant.setNext(assistant.getNext().getNext());
+                            size--;
+                            return;
+                        }
+                        assistant = assistant.getNext();
+                    }
             }
-            //no lo encontró si se sale del while
+
         }
     }
     public void mixKids(){
@@ -152,19 +155,18 @@ public class ListSE {
                         temp=temp.getNext();
                         count++;
 
-                        if(temp.getNext()!=null){
+                        if(temp.getNext()==null){
                             //el pelao no existe
                             return;
                         }
                     }
                     Node temp2=copyKid(temp.getNext());
-                    temp.setNext(temp.getNext().getNext());
-                    addInPosition(count+1+positionsToLose,temp2.getData());
+                    deleteKidByIdentification(temp.getNext().getData().getIdentification());
+                    addInPosition((count+1+positionsToLose),temp2.getData());
                 }
             }
             else{
                 //no se puede añadir en esa posición
-
             }
         }
     }
@@ -180,25 +182,24 @@ public class ListSE {
                     while(temp.getNext().getData().getIdentification()!=identification){
                         temp=temp.getNext();
                         count++;
-                        if(temp.getNext()!=null){
+                        if(temp.getNext()==null){
                             //el pelao no existe
-
                             return;
                         }
                     }
                     Node temp2=copyKid(temp.getNext());
-                    temp.setNext(temp.getNext().getNext());
+                    deleteKidByIdentification(temp.getNext().getData().getIdentification());
                     if(positionsToWin>=count+1){
                         addToStart(temp2.getData());
                     }
                     else {
-                        addInPosition((count + 1) - positionsToWin, temp2.getData());
+                        addInPosition(((count + 1) - positionsToWin), temp2.getData());
                     }
                 }
             }
             else{
                 //no se puede añadir en esa posición
-                return;
+
             }
         }
     }

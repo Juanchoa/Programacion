@@ -124,15 +124,13 @@ public class ListDEController {
                     404,"El la mascota no existe.",
                     null), HttpStatus.OK);
         }
-        if(iden == 1){
+        else{
             listDEService.getPets().deletePetById(number);
             return new ResponseEntity<>(new ResponseDTO(
                     200,"Se ha eliminado la mascota.",
                     null), HttpStatus.OK);
         }
-        return new ResponseEntity<>(new ResponseDTO(
-                404,"La mascota no existe.",
-                null), HttpStatus.OK);
+
     }
     @GetMapping(path = "/mix_pets")
     public ResponseEntity<ResponseDTO> mixKids(){

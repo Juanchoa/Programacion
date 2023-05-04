@@ -6,11 +6,14 @@ import co.edu.umanizales.tads.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
+@Validated
 @RestController
 @RequestMapping(path = "/listde")
 public class ListDEController {
@@ -45,7 +48,7 @@ public class ListDEController {
     }
 
     @PostMapping(path = "/add_pet_to_start")
-    public ResponseEntity<ResponseDTO> addPetToStar(@RequestBody PetDTO petDTO){
+    public ResponseEntity<ResponseDTO> addPetToStar(@Valid @RequestBody PetDTO petDTO){
         Species species = speciesService.getSpeciesByCode(petDTO.getCodeSpecies());
         int number = listDEService.getPets().checkIdentificationPet(petDTO.getIdentification());
         if(species == null){

@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
+import jakarta.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,7 +61,7 @@ public class ListSEController {
 
 
     @PostMapping(path = "/add_kid_to_start")
-    public ResponseEntity<ResponseDTO> addKidToStar(@RequestBody KidDTO kidDTO){
+    public ResponseEntity<ResponseDTO> addKidToStar(@RequestBody @Valid KidDTO kidDTO){
         Location locationDep = locationService.getLocationByCode(kidDTO.getCodeLocationDep());
         Location locationMun = locationService.getLocationByCode(kidDTO.getCodeLocationMun());
         Gender gender = genderService.getGenderByGenderCode(kidDTO.getGenderCode());

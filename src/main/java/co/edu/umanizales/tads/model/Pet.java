@@ -18,7 +18,7 @@ public class Pet {
     @NotNull(message = "No se puede agregar una mascota sin edad")
     private byte age;
     @Pattern(regexp = "[MF]",message = "El genero solo puede ser ´F´ (masculino) o ´F´ (femenino)")
-    private char gender;
+    private String gender;
     @NotNull(message = "No se puede agregar una mascota sin especie")
     private Species species;
 }

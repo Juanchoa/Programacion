@@ -1,5 +1,6 @@
 package co.edu.umanizales.tads.service;
 
+import co.edu.umanizales.tads.errors.Validation;
 import co.edu.umanizales.tads.model.Location;
 import lombok.Data;
 import org.springframework.stereotype.Service;
@@ -36,14 +37,14 @@ public class LocationService {
     }
 
 
-    public Location getLocationByCode(String code){
+    public Location getLocationByCode(String code)throws Validation {
 
         for(Location loc: locations){
             if(loc.getCode().equals(code)) {
                 return loc;
             }
         }
-        return null;
+        throw new Validation("La locación no existe.");
     }
 
 

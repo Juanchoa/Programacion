@@ -1,5 +1,6 @@
 package co.edu.umanizales.tads.model;
 
+import co.edu.umanizales.tads.errors.Validation;
 import co.edu.umanizales.tads.service.ListSEService;
 import lombok.Data;
 
@@ -31,45 +32,58 @@ public class ListSE {
         return numero;
     }
 
-    public void addToStart(Kid kid){
+    public void addToStart(Kid kid)throws Validation {
         if(head !=null)
         {
+            if(checkIdentification(kid.getIdentification())==1){
+                throw new Validation("Ya existe un pelao con esa identificación");
+            }
             Node newNode = new Node(kid);
             newNode.setNext(head);
             head = newNode;
+            size++;
         }
         else {
             head = new Node(kid);
+            size++;
         }
-        size++;
     }
-    public void addToEnd(Kid kid){
+    public void addToEnd(Kid kid)throws Validation{
         Node newNode = new Node(kid);
         if(head !=null)
         {
             Node temp=this.head;
             while(temp.getNext()!=null){
 
+                if(temp.getData().getIdentification()==kid.getIdentification()){
+                    throw new Validation("Ya existe un pelao con esa identificación.");
+                }
                 temp=temp.getNext();
             }
+            if(temp.getData().getIdentification()==kid.getIdentification()){
+                throw new Validation("Ya existe una pelao con esa identificación.");
+            }
             temp.setNext(newNode);
+            size++;
         }
         else{
             head= new Node(kid);
+            size++;
         }
-        size++;
     }
-    public void addInPosition(int position,Kid kid){
+    public void addInPosition(int position,Kid kid)throws Validation{
+        if(checkIdentification(kid.getIdentification())==1){
+            throw new Validation("el pelao ya existe.");
+        }
         Node node= new Node(kid);
         if(head!=null){
-            if(position>size){
-                addToEnd(kid);
-                return;
+            if(position-1>size){
+                throw new Validation("La cantidad de niños no es suficiente para añadir en esa posición");
             }
             if(position==1){
                 addToStart(kid);
             }
-            if(position!=1){
+            else{
                 int accumulator=0;
                 Node assistant=this.head;
                 while(accumulator<position-2 && assistant.getNext()!=null){
@@ -79,16 +93,25 @@ public class ListSE {
                 }
                 node.setNext(assistant.getNext());
                 assistant.setNext(node);
+                size++;
             }
         }
         else{
-            head=node;
+            if(position==1){
+                addToStart(kid);
+            }
+            else{
+                throw new Validation("La lista está vacia, solo se puede añadir en la primera posición.");
+            }
         }
-            size++;
     }
 
-    public void deleteKidByIdentification(int identification){
-        if(head!=null){
+    public void deleteKidByIdentification(int identification)throws Validation{
+        if(head==null){
+            throw new Validation("La lista está vacia.");
+        }
+        else{
+
             Node assistant=head;
             if(assistant.getData().getIdentification()==identification){
 
@@ -105,11 +128,12 @@ public class ListSE {
                         }
                         assistant = assistant.getNext();
                     }
+                throw new Validation("No existe un pelao con esa identificación.");
             }
 
         }
     }
-    public void mixKids(){
+    public void mixKids()throws Validation{
         if(head!=null){
             ListSE copyList=new ListSE();
             Node temp=this.head;
@@ -133,19 +157,22 @@ public class ListSE {
             }
             head=copyList.getHead();
         }
+        else{
+            throw new Validation("La lista está vacia.");
+        }
 
     }
     public Node copyKid(Node temp){
         return new Node(temp.getData());
     }
-    public void losePositions(int identification,int positionsToLose){
-
+    public void losePositions(int identification,int positionsToLose)throws Validation{
         if(head!=null){
+
             if(positionsToLose<size){
                 if(head.getData().getIdentification()==identification){
                     Node node= copyKid(head);
-                    addInPosition(positionsToLose+1,node.getData());
                     head=head.getNext();
+                    addInPosition(positionsToLose+1,node.getData());
                 }
                 else{
                     int count=1;
@@ -156,9 +183,11 @@ public class ListSE {
                         count++;
 
                         if(temp.getNext()==null){
-                            //el pelao no existe
-                            return;
+                            throw new Validation("El pelao no existe");
                         }
+                    }
+                    if(temp.getNext().getNext()==null){
+                        throw new Validation("El niño está en la ultima posición, no puede perder mas posiciones");
                     }
                     Node temp2=copyKid(temp.getNext());
                     deleteKidByIdentification(temp.getNext().getData().getIdentification());
@@ -166,15 +195,18 @@ public class ListSE {
                 }
             }
             else{
-                //no se puede añadir en esa posición
+                throw new Validation("No hay suficientes elementos en la lista para que el niño pierda esas posiciones.");
             }
         }
+        else{
+            throw new Validation("La lista está vacia..");
+        }
     }
-    public void winPositions(int identification,int positionsToWin){
+    public void winPositions(int identification,int positionsToWin)throws Validation{
         if(head!=null){
             if(positionsToWin<size){
                 if(head.getData().getIdentification()==identification){
-                    //no puede ganar posiciones
+                    throw new Validation("El pelao está en la primera posición, no puede ganar posiciones.");
                 }
                 else{
                     int count=1;
@@ -183,8 +215,7 @@ public class ListSE {
                         temp=temp.getNext();
                         count++;
                         if(temp.getNext()==null){
-                            //el pelao no existe
-                            return;
+                            throw new Validation("El pelao no existe");
                         }
                     }
                     Node temp2=copyKid(temp.getNext());
@@ -198,14 +229,17 @@ public class ListSE {
                 }
             }
             else{
-                //no se puede añadir en esa posición
+                throw new Validation("No hay elementos suficientes para poder añadir al pelao en esa posicion.");
 
             }
         }
+        else {
+            throw new Validation("La lista está vacia:");
+        }
     }
 
-    public void invert(){
-        if(this.head !=null){
+    public void invert()throws Validation{
+        if(this.head !=null && head.getNext() != null){
             ListSE listCp = new ListSE();
             Node temp = this.head;
             while(temp != null){
@@ -214,8 +248,11 @@ public class ListSE {
             }
             this.head = listCp.getHead();
         }
+        else{
+            throw new Validation("No hay elementos suficientes para poder invetir la lista.");
+        }
     }
-    public void orderBoysToStart(){
+    public void orderBoysToStart()throws Validation{
         if(this.head !=null){
             ListSE listCp = new ListSE();
             Node temp = this.head;
@@ -231,8 +268,11 @@ public class ListSE {
             }
             this.head = listCp.getHead();
         }
+        else{
+            throw new Validation("La lista está vacia.");
+        }
     }
-    public void changeExtremes(){
+    public void changeExtremes()throws Validation{
         if(this.head !=null && this.head.getNext() !=null)
         {
             Node temp = this.head;
@@ -244,6 +284,9 @@ public class ListSE {
             Kid copy = this.head.getData();
             this.head.setData(temp.getData());
             temp.setData(copy);
+        }
+        else{
+            throw new Validation("No hay elementos suficientes para poder cambiar los extremos de la lista.");
         }
 
     }
@@ -306,29 +349,20 @@ public class ListSE {
         }
         return count;
     }
-    public int getCountKidsByCodeGender(String codeGender,int age){
-        int count= 0;
-        if(this.head!=null){
-            Node temp = this.head;
-            while (temp != null){
-                if(temp.getData().getGender().getCodeGender().equals(codeGender)&&(temp.getData().getAge()>age)){
 
-                    count++;
-
-                }
-                temp = temp.getNext();
-            }
-        }
-        return count;
-    }
-    public void deleteKidByAge(int age){
+    public void deleteKidByAge(int age)throws Validation{
         Node temp = head;
+        int count=0;
         while(temp!=null){
 
             if(temp.getData().getAge()==age){
                 deleteKidByIdentification(temp.getData().getIdentification());
+                count++;
             }
             temp=temp.getNext();
+        }
+        if(count<1){
+            throw new Validation("No hay niños con esa edad.");
         }
     }
     public float averageKidsAge(){
@@ -349,19 +383,29 @@ public class ListSE {
             return 0;
         }
     }
-    public void addAtTheEndByInicialName(String letter){
-        ListSE listCp = new ListSE();
-        Node temp = head;
-        while(temp!=null){
-            if(temp.getData().getName().startsWith(letter)){
-                listCp.addToEnd(temp.getData());
+    public void addAtTheEndByInicialName(String letter)throws Validation{
+        if(head!=null) {
+            ListSE listCp = new ListSE();
+            Node temp = head;
+            int count = 0;
+            while (temp != null) {
+                if (temp.getData().getName().startsWith(letter)) {
+                    listCp.addToEnd(temp.getData());
+                    count++;
+                } else {
+                    listCp.addToStart(temp.getData());
+                }
+                temp = temp.getNext();
             }
-            else{
-                listCp.addToStart(temp.getData());
+            if (count < 1) {
+                throw new Validation("No hay niños que tengan esa inicial.");
+            } else {
+                head = listCp.getHead();
             }
-            temp=temp.getNext();
         }
-        head=listCp.getHead();
+        else{
+            throw new Validation("La lista está vacia.");
+        }
     }
     public int getKidsRangeByAge(int min, int max) {
         Node temp = head;

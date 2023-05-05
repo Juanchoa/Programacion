@@ -1,5 +1,6 @@
 package co.edu.umanizales.tads.service;
 
+import co.edu.umanizales.tads.errors.Validation;
 import co.edu.umanizales.tads.model.Kid;
 import co.edu.umanizales.tads.model.ListSE;
 import co.edu.umanizales.tads.model.Location;
@@ -20,7 +21,7 @@ public class ListSEService {
         kids = new ListSE();
     }
 
-    public void invert(){
+    public void invert()throws Validation {
         kids.invert();
     }
 

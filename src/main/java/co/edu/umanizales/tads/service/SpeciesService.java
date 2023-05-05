@@ -1,6 +1,7 @@
 package co.edu.umanizales.tads.service;
 
 
+import co.edu.umanizales.tads.errors.Validation;
 import co.edu.umanizales.tads.model.Location;
 import co.edu.umanizales.tads.model.Species;
 import lombok.Data;
@@ -23,14 +24,15 @@ public class SpeciesService {
         species.add(new Species("4","Peces"));
     }
 
-    public Species getSpeciesByCode(String code){
+    public Species getSpeciesByCode(String code)throws Validation {
 
         for(Species i: species){
             if(i.getCode().equals(code)){
                 return i;
             }
+
         }
-        return null;
+        throw new Validation("La especie no existe");
     }
 
 }

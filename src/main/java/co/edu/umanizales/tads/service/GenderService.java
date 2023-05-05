@@ -1,5 +1,6 @@
 package co.edu.umanizales.tads.service;
 
+import co.edu.umanizales.tads.errors.Validation;
 import co.edu.umanizales.tads.model.Gender;
 import co.edu.umanizales.tads.model.Location;
 import lombok.Data;
@@ -20,13 +21,13 @@ public class GenderService {
         genders.add(new Gender('F',"2"));
     }
 
-    public Gender getGenderByGenderCode(String genderCode){
+    public Gender getGenderByGenderCode(String genderCode)throws Validation{
 
         for(Gender gen: genders){
             if(gen.getCodeGender().equals(genderCode)){
                 return gen;
             }
         }
-        return null;
+        throw new Validation("El codigo de genero no existe.");
     }
 }

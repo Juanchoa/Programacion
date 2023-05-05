@@ -24,6 +24,4 @@ public class Erros {
         });
         return new ResponseEntity<>(new ResponseDTO(400, errors, null),HttpStatus.BAD_REQUEST);
     }
-
-
 }

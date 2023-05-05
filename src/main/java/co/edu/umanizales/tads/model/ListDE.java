@@ -1,5 +1,6 @@
 package co.edu.umanizales.tads.model;
 
+import co.edu.umanizales.tads.errors.Validation;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -31,7 +32,7 @@ public class ListDE {
         return numero;
     }
 
-    public List<Pet> seePets(){
+    public List<Pet> seePets()throws Validation{
         List<Pet> newListDE= new ArrayList<>();
         if(head!=null){
             NodeDE temp = head;
@@ -43,18 +44,24 @@ public class ListDE {
             return newListDE;
         }
         else{
-            return null;
+            throw new Validation("No hay datos que listar");
         }
     }
 
-     public void addPetToEnd(Pet pet){
+     public void addPetToEnd(Pet pet)throws Validation{
 
          NodeDE newNodeDE=new NodeDE(pet);
          if(head!=null){
              NodeDE temp=this.head;
              while(temp.getNext()!=null){
 
+                    if(temp.getData().getIdentification()==pet.getIdentification()){
+                        throw new Validation("Ya existe una mascota con esa identificación.");
+                    }
                  temp=temp.getNext();
+             }
+             if(temp.getData().getIdentification()==pet.getIdentification()){
+                 throw new Validation("Ya existe una mascota con esa identificación.");
              }
              temp.setNext(newNodeDE);
              newNodeDE.setPrevious(temp);
@@ -64,9 +71,13 @@ public class ListDE {
          }
          size++;
      }
-     public void addPetToStart(Pet pet){
+     public void addPetToStart(Pet pet) throws Validation{
+
          NodeDE newNodeDE=new NodeDE(pet);
          if(head!=null){
+             if(checkIdentificationPet(pet.getIdentification())==1){
+                 throw new Validation("Ya existe una mascota con esa dientificación");
+             }
              newNodeDE.setNext(head);
              head.setPrevious(newNodeDE);
              head=newNodeDE;
@@ -76,18 +87,20 @@ public class ListDE {
          }
          size++;
      }
-    public void addPetInPosition(int position,Pet pet){
+    public void addPetInPosition(int position,Pet pet) throws Validation{
+        if(checkIdentificationPet(pet.getIdentification())==1){
+            throw new Validation("La mascota ya existe.");
+        }
         NodeDE node= new NodeDE(pet);
         if(head!=null){
-            if(position>size){
-                addPetToEnd(pet);
-                return;
+            if(position-1>size){
+                throw new Validation("La cantidad de mascotas no es suficiente para añadir en esa posición");
             }
             if(position==1){
                 addPetToStart(pet);
                 return;
             }
-            if(position!=1){
+            else{
                 int accumulator=0;
                 NodeDE assistant=this.head;
                 while(accumulator<position-2 && assistant.getNext()!=null){
@@ -102,11 +115,19 @@ public class ListDE {
             }
         }
         else{
-            head=node;
+            if(position==1){
+                addPetToStart(pet);
+            }
+            else{
+                throw new Validation("La lista está vacia, solo se puede añadir en la primera posición.");
+            }
         }
         size++;
     }
-    public void deletePetById (int id){
+    public void deletePetById (int id)throws Validation{
+        if(head==null){
+            throw new Validation("La lista está vacia.");
+        }
         NodeDE temp = head;
         while (temp != null){
             if (temp.getData().getIdentification()==id){
@@ -121,11 +142,13 @@ public class ListDE {
                     next.setPrevious(prev);
                 }
                 size--;
+                return;
             }
             temp = temp.getNext();
         }
+            throw new Validation("No existe una mascota con esa identificación.");
     }
-    public void mixPets(){
+    public void mixPets()throws Exception{
         if(head!=null){
             ListDE copyList=new ListDE();
             NodeDE temp=this.head;
@@ -133,14 +156,14 @@ public class ListDE {
             int positionGirl=0;
             while(temp!=null) {
 
-                if (temp.getData().getGender()==('M')){
+                if (temp.getData().getGender().equals("M")){
 
                     copyList.addPetInPosition(1+positionBoy,temp.getData());
 
                     positionBoy=positionBoy+2;
 
                 }
-                if(temp.getData().getGender()==('F')){
+                if(temp.getData().getGender().equals("F")){
                     copyList.addPetInPosition(2+positionGirl,temp.getData());
 
                     positionGirl=positionGirl+2;
@@ -150,21 +173,21 @@ public class ListDE {
             head=copyList.getHead();
         }
         else{
-
+                throw new Validation("La lista está vacia, no hay datos que mezclar");
         }
     }
     public NodeDE copyPet(NodeDE temp){
         return new NodeDE(temp.getData());
     }
 
-    public void losePositions(int identification,int positionsToLose){
+    public void losePositions(int identification,int positionsToLose)throws Validation{
 
         if(head!=null){
             if(positionsToLose<size){
                 if(head.getData().getIdentification()==identification){
                     NodeDE node= copyPet(head);
-                    addPetInPosition(positionsToLose+1,node.getData());
                     head=head.getNext();
+                    addPetInPosition(positionsToLose+1,node.getData());
                 }
                 else{
                     int count=1;
@@ -175,9 +198,11 @@ public class ListDE {
                         count++;
 
                         if(temp.getNext()==null){
-                            //el pelao no existe
-                            return;
+                            throw new Validation("La mascota no existe.");
                         }
+                    }
+                    if(temp.getNext().getNext()==null){
+                        throw new Validation("La mascota no puede perder posiciones ya que está en el ultimo lugar de la lista.");
                     }
                     NodeDE temp2=copyPet(temp.getNext());
                     deletePetById(temp.getNext().getData().getIdentification());
@@ -185,16 +210,17 @@ public class ListDE {
                 }
             }
             else{
-                //no se puede añadir en esa posición
-                return;
+                throw new Validation("No hay datos suficientes para que la mascota pueda perder esa cantidad de posiciones.");
             }
         }
+        else {
+            throw new Validation("La lista está vacia");}
     }
-    public void winPositions(int identification,int positionsToWin){
+    public void winPositions(int identification,int positionsToWin)throws Validation{
         if(head!=null){
             if(positionsToWin<size){
                 if(head.getData().getIdentification()==identification){
-                    //no puede ganar posiciones
+                    throw new Validation("La mascota no puede ganar posiciones ya que está en el primer lugar de la lista.");
                 }
                 else{
                     int count=1;
@@ -203,8 +229,7 @@ public class ListDE {
                         temp=temp.getNext();
                         count++;
                         if(temp.getNext()==null){
-                            //el pelao no existe
-                            return;
+                            throw new Validation("La mascota no existe.");
                         }
                     }
                     //copiamos los datos del dato que va a ganar las posiciones
@@ -219,14 +244,13 @@ public class ListDE {
                         addPetInPosition(((count + 1) - positionsToWin), temp2.getData());
                     }
                 }
+
             }
-            else{
-                //no se puede añadir en esa posición
-                return;
-            }
+            else{throw new Validation("No hay datos suficientes para que la mascota pueda ganar esa cantidad de posiciones.");}
         }
+        else {throw new Validation("La lista está vacia");}
     }
-    public void invert(){
+    public void invert()throws Validation{
         if(this.head !=null){
             ListDE listCp = new ListDE();
             NodeDE temp = this.head;
@@ -236,14 +260,17 @@ public class ListDE {
             }
             this.head = listCp.getHead();
         }
+        else{
+            throw new Validation("La lista está vacia");
+        }
     }
-    public void orderBoysToStart(){
+    public void orderBoysToStart()throws Validation{
         if(this.head !=null){
             ListDE listCp = new ListDE();
             NodeDE temp = this.head;
             while(temp != null){
 
-                if(temp.getData().getGender()=='M')
+                if(temp.getData().getGender().equals("M"))
                 {
                     listCp.addPetToStart(temp.getData());
                 }
@@ -254,8 +281,11 @@ public class ListDE {
             }
             this.head = listCp.getHead();
         }
+        else{
+            throw new Validation("La lista está vacia.");
+        }
     }
-    public void changeExtremes(){
+    public void changeExtremes()throws Validation{
         if(this.head !=null && this.head.getNext() !=null)
         {
             NodeDE temp = this.head;
@@ -268,16 +298,23 @@ public class ListDE {
             this.head.setData(temp.getData());
             temp.setData(copy);
         }
-
+        else{
+            throw new Validation("No hay datos suficientes para cambiar los extremos");
+        }
     }
-    public void deletePetByAge(int age){
+    public void deletePetByAge(int age)throws Validation{
         NodeDE temp = head;
+        int count =0;
         while(temp!=null){
 
             if(temp.getData().getAge()==age){
                 deletePetById(temp.getData().getIdentification());
+                count++;
             }
             temp=temp.getNext();
+        }
+        if(count<1){
+            throw new Validation("No hay mascotas con esa edad.");
         }
     }
     public float averagePetsAge(){
@@ -298,32 +335,43 @@ public class ListDE {
             return 0;
         }
     }
-    public void addPetAtTheEndByInicialName(String letter){
-        ListDE listCp = new ListDE();
-        NodeDE temp = head;
-        while(temp!=null){
-            if(temp.getData().getName().startsWith(letter)){
-                listCp.addPetToEnd(temp.getData());
+    public void addPetAtTheEndByInicialName(String letter)throws Validation{
+        if(head!=null) {
+            ListDE listCp = new ListDE();
+            NodeDE temp = head;
+            while (temp != null) {
+                if (temp.getData().getName().startsWith(letter)) {
+                    listCp.addPetToEnd(temp.getData());
+                } else {
+                    listCp.addPetToStart(temp.getData());
+                }
+                temp = temp.getNext();
             }
-            else{
-                listCp.addPetToStart(temp.getData());
+            if (listCp.size<1){
+                throw new Validation("No hay mascotas que su nombre inicie por la letra dada");
             }
-            temp=temp.getNext();
+            head = listCp.getHead();
         }
-        head=listCp.getHead();
-    }
-    public int getPetsRangeAge(int min, int max) {
-        NodeDE temp = head;
-        int count = 0;
-        while (temp !=  null) {
-            if (temp.getData().getAge() >= min && temp.getData().getAge() <= max) {
-                count++;
-            }
-            temp= temp.getNext();
+        else{
+            throw new Validation("La lista está vacia");
         }
-        return count;
     }
-
+    public int getPetsRangeAge(int min, int max)throws Validation {
+        if(head!=null) {
+            NodeDE temp = head;
+            int count = 0;
+            while (temp != null) {
+                if (temp.getData().getAge() >= min && temp.getData().getAge() <= max) {
+                    count++;
+                }
+                temp = temp.getNext();
+            }
+            return count;
+        }
+        else{
+            throw new Validation("La lista está vacia");
+        }
+    }
 
     public int getCountPetsSpicesByCode(String code){
         int count =0;
@@ -338,8 +386,4 @@ public class ListDE {
         }
         return count;
     }
-
-
-
-
 }

@@ -386,4 +386,64 @@ public class ListDE {
         }
         return count;
     }
+
+    /*
+    algoritmo metodo para eliminar parado en la posición a eliminar
+
+    necesito saber que mascota voy a eliminar, asi que le pido al usario una id por parametro
+    ¿hay datos?
+    si- creo un temp y le digo que se pare en la cabeza, mientras su id sea diferente a la que dió el usario
+        va a ser igual a su siguiente.
+        si temp es igual a nulo, la mascota no exite y se lo digo al usario.
+         Cuando la id de temp sea igual a la del parametro:
+          creo 2 temporales, uno será el anterio de temp y el otro su siguiente.
+          ¿ambos son nulos?
+          significa que solo está el elemento a eliminar en la lista
+          entonces hago que la cabeza sea nula.
+          ¿temp anterior es nulo?
+           si-nombramos a la cabeza como temp siguiente.
+          ¿temp siguiente es nulo?
+          si-el siguiente de temp anterior será nulo
+         si ninguna de esas 2 condiciones se cumple:
+          el siguiente de temp anterior será temp siguiente y
+          el anterior de temp siguiente será temp anterior
+   no- digo que no hay datos
+
+      fin.
+     */
+    public void deletePetInPositionById(int id){
+
+        if(this.head != null){
+
+           NodeDE temp= this.head;
+           while (temp.getData().getIdentification()!= id){
+               temp=temp.getNext();
+               if(temp==null){
+                   return;
+                   //la mascota no existe
+               }
+           }
+           NodeDE tempNext= temp.getNext();
+           NodeDE tempPrev= temp.getPrevious();
+
+           if(tempNext==null && tempPrev==null ){
+               this.head=null;
+               size--;
+               return;
+           }
+           if(tempPrev==null){
+               head=tempNext;
+               size--;
+               return;
+           }
+           if(tempNext==null){
+               tempPrev.setNext(null);
+               size--;
+               return;
+           }
+           tempPrev.setNext(tempNext);
+           tempNext.setPrevious(tempPrev);
+           size--;
+        }
+    }
 }

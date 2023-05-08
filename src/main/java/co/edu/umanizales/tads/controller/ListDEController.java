@@ -286,8 +286,14 @@ public class ListDEController {
                 HttpStatus.OK);
 
     }
+    @GetMapping("/delete_pet_by_id_in_position/{id}")
+    public ResponseEntity<ResponseDTO> deletePetByIdInPosition(@PathVariable int id){
 
+        listDEService.getPets().deletePetInPositionById(id);
 
-
+        return new ResponseEntity<>(new ResponseDTO(
+                200,"Se ha eliminado la mascota.",
+                null), HttpStatus.OK);
+    }
 
 }

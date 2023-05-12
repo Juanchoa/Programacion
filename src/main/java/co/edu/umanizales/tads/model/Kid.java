@@ -17,7 +17,6 @@ public class Kid {
     private int identification;
     private String name;
     private byte age;
-    @Pattern(regexp = "[MF]",message = "El genero solo puede ser ´F´ (masculino) o ´M´ (femenino)")
     private Gender gender;
     private Location locationDep;
     private Location locationMun;
@@ -27,5 +26,5 @@ public class Kid {
         return identification;
     }
 
-    //ValidatorFactory validator = Validation.buildDefaultValidatorFactory();
+
 }

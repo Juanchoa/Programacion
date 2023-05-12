@@ -20,4 +20,10 @@ public class PetDTO {
     private String gender;
     @NotBlank(message = "No se puede agregar una mascota sin especie")
     private String codeSpecies;
+
+    private boolean clean;
+
+    public PetDTO() {
+        this.clean = false;
+    }
 }

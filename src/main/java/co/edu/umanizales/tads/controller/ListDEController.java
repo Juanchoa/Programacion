@@ -67,6 +67,7 @@ public class ListDEController {
     @PostMapping(path = "/add_pet_to_start")
     public ResponseEntity<ResponseDTO> addPetToStar(@RequestBody @Valid PetDTO petDTO){
         Species species = null;
+        boolean clean = false;
         try {
             species = speciesService.getSpeciesByCode(petDTO.getCodeSpecies());
         } catch (Validation e) {
@@ -78,7 +79,7 @@ public class ListDEController {
             listDEService.getPets().addPetToStart(
                     new Pet(petDTO.getIdentification(),
                             petDTO.getName(), petDTO.getAge(),
-                            petDTO.getGender(),species));
+                            petDTO.getGender(),species,clean));
         } catch (Exception e) {
             return new ResponseEntity<>(new ResponseDTO(
                     400,e.getMessage(),
@@ -93,6 +94,7 @@ public class ListDEController {
     @PostMapping(path = "/add_pet_to_end")
     public ResponseEntity<ResponseDTO> addPetToEnd(@RequestBody @Valid PetDTO petDTO){
         Species species = null;
+        boolean clean = false;
         try {
             species = speciesService.getSpeciesByCode(petDTO.getCodeSpecies());
         } catch (Validation e) {
@@ -104,7 +106,7 @@ public class ListDEController {
             listDEService.getPets().addPetToEnd(
                     new Pet(petDTO.getIdentification(),
                             petDTO.getName(), petDTO.getAge(),
-                            petDTO.getGender(),species));
+                            petDTO.getGender(),species,clean));
         } catch (Exception e) {
             return new ResponseEntity<>(new ResponseDTO(
                     400,e.getMessage(),
@@ -118,6 +120,7 @@ public class ListDEController {
     @PostMapping(path = "/add_in_position/{number}")
     public ResponseEntity<ResponseDTO> addInPosition(@RequestBody @Valid PetDTO petDTO,@PathVariable int number){
         Species species = null;
+        boolean clean = false;
         try {
             species = speciesService.getSpeciesByCode(petDTO.getCodeSpecies());
         } catch (Validation e) {
@@ -135,7 +138,7 @@ public class ListDEController {
             listDEService.getPets().addPetInPosition(number,
                     new Pet(petDTO.getIdentification(),
                             petDTO.getName(), petDTO.getAge(),
-                            petDTO.getGender(),species));
+                            petDTO.getGender(),species,clean));
         } catch (Exception e) {
             return new ResponseEntity<>(new ResponseDTO(
                     400,e.getMessage(),

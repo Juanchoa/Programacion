@@ -49,7 +49,7 @@ public class CircularListDEController {
                     null), HttpStatus.OK);
         }
         return new ResponseEntity<>(new ResponseDTO(
-                200,"se ha añadido la mascota al inicio",
+                200,"se ha añadido la mascota al inicio.",
                 null), HttpStatus.OK);
     }
     @PostMapping("/add_pet_to_end")
@@ -73,7 +73,7 @@ public class CircularListDEController {
                     400,e.getMessage(),
                     null), HttpStatus.OK);
         }
-        return new ResponseEntity<>(new ResponseDTO(200,"se ha añadido la mascota al final",null), HttpStatus.OK);
+        return new ResponseEntity<>(new ResponseDTO(200,"se ha añadido la mascota al final.",null), HttpStatus.OK);
     }
     @PostMapping("/add_pet_in_position/{position}")
     public ResponseEntity<ResponseDTO> addPetInPosition(@RequestBody PetDTO petDTO, @PathVariable int position){
@@ -98,6 +98,19 @@ public class CircularListDEController {
         }
         return new ResponseEntity<>(new ResponseDTO(200,"se ha añadido la mascota en la posición "+ position +".",null), HttpStatus.OK);
     }
+    @GetMapping("/clean_random_pet/{sideToTurn}")
+    public ResponseEntity<ResponseDTO> cleanRandomPet(@PathVariable String sideToTurn){
+
+        try {
+            circularListDEService.getPets().cleanRandomPet(sideToTurn);
+        } catch (Validation e) {
+            return new ResponseEntity<>(new ResponseDTO(
+                    400,e.getMessage(),
+                    null), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(new ResponseDTO(200,"Se ha bañado una mascota de forma aleatoria.",null), HttpStatus.OK);
+    }
+
 
 
 }

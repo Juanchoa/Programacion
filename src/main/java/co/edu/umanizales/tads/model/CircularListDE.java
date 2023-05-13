@@ -5,6 +5,7 @@ import lombok.Data;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 @Data
 public class CircularListDE {
@@ -127,8 +128,44 @@ public class CircularListDE {
         }
         return pets;
     }
-
-
-
+    public void cleanRandomPet(String sideToTurn)throws Validation{
+        if(head!=null){
+            if(sideToTurn.equals("derecha")){
+                NodeDE temp =head;
+                int count=1;
+                Random random = new Random();
+                int randomNumber = random.nextInt(100)+1;
+                while (count<randomNumber){
+                    temp=temp.getNext();
+                    count++;
+                }
+                if(!temp.getData().isClean()){
+                    temp.getData().setClean(true);
+                }
+                else{
+                    throw new Validation("La mascota ya está limpia, no se puede bañar.");
+                }
+            }
+            if(sideToTurn.equals("izquierda")){
+                NodeDE temp =head;
+                int count=1;
+                Random random = new Random();
+                int randomNumber = random.nextInt(100)+1;
+                while (count<randomNumber){
+                    temp=temp.getPrevious();
+                    count++;
+                }
+                if(!temp.getData().isClean()){
+                    temp.getData().setClean(true);
+                }
+                else{
+                    throw new Validation("La mascota ya está limpia, no se puede bañar.");
+                }
+            }
+        }
+        else{
+            throw new Validation("No existen mascotas para bañar.");
+        }
+    }
 
 }
